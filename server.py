@@ -12,7 +12,7 @@ downstream = environ["DOWNSTREAM"]
 
 iptables_rule = ("PREROUTING -t nat -p tcp -m tcp --destination "
                  f"{downstream} --dport 22 -j REDIRECT --to-ports 10022")
-chisel_arguments = ["server", "--reverse"]
+chisel_arguments = ["server", "--reverse", "--port", "80"]
 chisel = ("https://github.com/jpillora/chisel/releases/download/"
           "v1.7.2/chisel_1.7.2_linux_amd64.gz")
 
