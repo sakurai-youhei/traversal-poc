@@ -2,7 +2,6 @@
 
 from gzip import decompress
 from subprocess import check_call
-from subprocess import Popen
 from os import environ
 from tempfile import NamedTemporaryFile
 from urllib.request import urlopen
@@ -33,8 +32,7 @@ def main():
     check_call("sysctl -w net.ipv4.ip_forward=1".split())
     for rule in iptables_rules:
         check_call(["iptables", "-v", "-A"] + rule.split())
-    with Popen([fp.name] + chisel_arguments) as proc:
-        proc.wait()
+    check_call([fp.name] + chisel_arguments)
 
 
 if __name__ == "__main__":
