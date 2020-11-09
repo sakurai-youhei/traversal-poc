@@ -10,8 +10,8 @@ from urllib.request import urlopen
 
 downstream = environ["DOWNSTREAM"]
 
-iptables_rules = ("PREROUTING -t nat -p tcp -m tcp --destination "
-                  f"{downstream} --dport 22 -j REDIRECT --to-ports 10022")
+iptables_rule = ("PREROUTING -t nat -p tcp -m tcp --destination "
+                 f"{downstream} --dport 22 -j REDIRECT --to-ports 10022")
 chisel_arguments = ["server", "--reverse"]
 chisel = ("https://github.com/jpillora/chisel/releases/download/"
           "v1.7.2/chisel_1.7.2_linux_amd64.gz")
@@ -23,8 +23,7 @@ def main():
 
     check_call(["chmod", "+x", fp.name])
     check_call("sysctl -w net.ipv4.ip_forward=1".split())
-    for rule in iptables_rules:
-        check_call(["iptables", "-A"] + rule.split())
+    check_call(["iptables", "-A"] + iptables_rule.split())
     with Popen([fp.name] + chisel_arguments) as proc:
         proc.wait()
 
