@@ -23,7 +23,7 @@ def main():
 
     check_call(["chmod", "+x", fp.name])
     check_call("sysctl -w net.ipv4.ip_forward=1".split())
-    check_call(["iptables", "-A"] + iptables_rule.split())
+    check_call(["iptables", "-v", "-A"] + iptables_rule.split())
     with Popen([fp.name] + chisel_arguments) as proc:
         proc.wait()
 
