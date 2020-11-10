@@ -1,41 +1,42 @@
 # traversal-poc
 
+## Version 1
+
 **server**
 
 ```
-export DOWNSTREAM=172.xx.xx.xx
-curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/server.py | sudo -E python3
+export AGENT=172.xx.xx.xx
+curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v1/server.py | sudo -E python3
 ```
 
 **client**
 
 ```
 export SERVER=192.xx.xx.xx
-export UPSTREAM=192.xx.xx.xx
-export DOWNSTREAM=172.xx.xx.xx
-curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/client.py | sudo -E python3
+export MANAGER=192.xx.xx.xx
+export AGENT=172.xx.xx.xx
+curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v1/client.py | sudo -E python3
 ```
 
 ## Diagram
 
 ```
-UPSTREAM                           DOWNSTREAM
-+------+                           +--------+
-| 5432 |                           |        |
-| 80   |                           |        |
-| 22   |                           |  22    |
-+--+---+                           +---+----+
-   ^                                   ^
-   |   +----+    +--------+   +----+   |
-   |   |    |    |        |   |    |   |
-   +-->+    +<----------------+    +<--+
-       |    |    |        |   |    |
-       +----+    +--------+   +----+
-      (chisel)   NAPT/PROXY  (chisel)
-       SERVER                 CLIENT
-
-  [iptables]                 [iptables]
-                             15432 <- 5432
-                             10080 <- 80
-  22 -> 10022                10022 <- 22
+  MANAGER                                                   AGENT
+  +------+                                                 +-----+
+  | 5432 |                                                 |     |
+  | 80   |                                                 |     |
++-->22   |                                                 |  22<--+
+| |      |                                                 |     | |
+| +--+---+                                                 +---+-+ |
+|    |       SERVER          NA(P)T/PROXY         CLIENT       |   |
+|    |   +-------------+    +------------+   +---------------+ |   |
+|    |   |[iptables]   |    |            |   |     [iptables]| |   |
+|    +-----+           |    |            |   |           +-----+   |
+|        | |           |    |            |   |           v   |     |
+|        | |           |    | WebSocket  |   | 15432 <- 5432 |     |
+|        | v           |    |   over     |   | 10080 <- 80   |     |
+|        | 22 -> 10022 |    |    SSL/TLS |   | 10022 <- 22   |     |
++--------------[chisel]<----------------------[chisel]-------------+
+         |             |    |  (443/tcp) |   |               |
+         +-------------+    +------------+   +---------------+
 ```
