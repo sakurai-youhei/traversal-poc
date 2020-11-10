@@ -71,10 +71,11 @@ FO5l6w5JIv86uG8iHyELpNP2Kp8xUMWdtaTq8BhGx1gNb1uwSdTCXw==
 
 
 def main():
-    with NamedTemporaryFile("wb", delete=False) as fp, urlopen(chisel) as res:
+    with urlopen(chisel) as res, \
+            NamedTemporaryFile("wb", delete=False) as fp, \
+            NamedTemporaryFile("w", delete=False) as crt, \
+            NamedTemporaryFile("w", delete=False) as key:
         fp.write(decompress(res.read()))
-
-    with NamedTemporaryFile("w") as crt, NamedTemporaryFile("w") as key:
         print(TEST_CRT, file=crt)
         print(TEST_KEY, file=key)
 
