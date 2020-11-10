@@ -32,6 +32,7 @@ curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v1/client.py 
 |    |   +-------------+    +------------+   +---------------+ |   |
 |    |   |[iptables]   |    |            |   |     [iptables]| |   |
 |    +-----+           |    |            |   |           +-----+   |
+|        | |           |    |            |   |           |   |     |
 |        | |           |    |            |   |           v   |     |
 |        | |           |    | WebSocket  |   | 15432 <- 5432 |     |
 |        | v           |    |   over     |   | 10080 <- 80   |     |
