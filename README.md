@@ -18,16 +18,23 @@ export AGENT=172.xx.xx.xx
 curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v1/client.py | sudo -E python3
 ```
 
+**Prerequisites**
+
+- sudo
+- iptables
+- curl
+- Python 3.7 or later
+
 **Diagram**
 
 ```
-  MANAGER                                                   AGENT
-  +------+                                                 +-----+
-  | 5432 |                                                 |     |
-  | 80   |                                                 |     |
-+-->22   |                                                 |  22<--+
-| |      |                                                 |     | |
-| +--+---+                                                 +---+-+ |
+   MANAGER                                                  AGENT
+  +-------+                                                +-----+
+  | 5432  |                                                |     |
+  | 80    |                                                |     |
++-->22    |                                                |  22<--+
+| |       |                                                |     | |
+| +--+----+                                                +---+-+ |
 |    |       SERVER          NA(P)T/PROXY         CLIENT       |   |
 |    |   +-------------+    +------------+   +---------------+ |   |
 |    |   |[iptables]   |    |            |   |     [iptables]| |   |
