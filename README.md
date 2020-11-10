@@ -34,7 +34,8 @@ curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v1/client.py 
 |    +-----+           |    |            |   |           +-----+   |
 |        | |           |    |            |   |           |   |     |
 |        | |           |    |            |   |           v   |     |
-|        | |           |    | WebSocket  |   | 15432 <- 5432 |     |
+|        | |           |    |            |   | 15432 <- 5432 |     |
+|        | |           |    | WebSocket  |   | 10443 <- 443  |     |
 |        | v           |    |   over     |   | 10080 <- 80   |     |
 |        | 22 -> 10022 |    |    SSL/TLS |   | 10022 <- 22   |     |
 +--------------[chisel]<----------------------[chisel]-------------+
