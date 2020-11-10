@@ -12,6 +12,7 @@ agent = environ["AGENT"]
 iptables_rule = ("PREROUTING -t nat -p tcp -m tcp --destination "
                  f"{agent} --dport 22 -j REDIRECT --to-ports 10022")
 chisel_arguments = ["server",
+                    "-v",
                     "--reverse",
                     "--port", "443"]
 chisel = ("https://github.com/jpillora/chisel/releases/download/"
