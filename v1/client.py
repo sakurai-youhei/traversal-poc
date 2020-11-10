@@ -35,7 +35,8 @@ def main():
     check_call("sysctl -w net.ipv4.ip_forward=1".split())
     for rule in iptables_rules:
         check_call(["iptables", "-v", "-A"] + rule.split())
-    check_call([fp.name] + chisel_arguments)
+    while True:
+        check_call([fp.name] + chisel_arguments)
 
 
 if __name__ == "__main__":
