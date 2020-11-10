@@ -7,7 +7,7 @@ from tempfile import NamedTemporaryFile
 from urllib.request import urlopen
 
 
-agent = environ["agent"]
+agent = environ["AGENT"]
 
 iptables_rule = ("PREROUTING -t nat -p tcp -m tcp --destination "
                  f"{agent} --dport 22 -j REDIRECT --to-ports 10022")
