@@ -15,7 +15,7 @@ iptables_rules = [f"PREROUTING -t nat -p tcp -m tcp --destination {manager} "
                   f"--dport {port} -j REDIRECT --to-ports 1{port:0>4}"
                   for port in (22, 80, 5432)]
 chisel_arguments = ["client",
-                    f"http://{server}",
+                    f"https://{server}",
                     f"0.0.0.0:10022:{manager}:22",
                     f"0.0.0.0:10080:{manager}:80",
                     f"0.0.0.0:15432:{manager}:5432",
