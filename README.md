@@ -31,6 +31,7 @@ curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v1/client.py 
    MANAGER                                                  AGENT
   +-------+                                                +-----+
   | 5432  |                                                |     |
+  | 443   |                                                |     |
   | 80    |                                                |     |
 +-->22    |                                                |  22<--+
 | |       |                                                |     | |
