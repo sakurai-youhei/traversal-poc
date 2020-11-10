@@ -81,9 +81,8 @@ def main():
     check_call(["chmod", "+x", fp.name])
     check_call("sysctl -w net.ipv4.ip_forward=1".split())
     check_call(["iptables", "-v", "-A"] + iptables_rule.split())
-    check_call([fp.name,
-                "--tls-cert", crt.name,
-                "--tls-key", key.name] + chisel_arguments)
+    check_call([fp.name] + chisel_arguments + ["--tls-cert", crt.name,
+                                               "--tls-key", key.name])
 
 
 if __name__ == "__main__":
