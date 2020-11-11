@@ -40,8 +40,8 @@ def main():
 
     while True:
         opts = ("client -v --tls-skip-verify https://%(manager)s:8443 "
-                "0.0.0.0:10022:%(manager)s:22 0.0.0.0:10080:%(manager)s:80 "
-                "0.0.0.0:10443:%(manager)s:443 0.0.0.0:15432:%(manager)s:5432 "
+                "0.0.0.0:10022:127.0.0.1:22 0.0.0.0:10080:127.0.0.1:80 "
+                "0.0.0.0:10443:127.0.0.1:443 0.0.0.0:15432:127.0.0.1:5432 "
                 "R:0.0.0.0:1%(port)04d:127.0.0.1:22") % dict(
                     manager=manager, port=22 + index)
         check_call([fp.name] + opts.split())

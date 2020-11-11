@@ -48,5 +48,5 @@ _Note: The `agent-index` starts from 1._
 
 **Configuration notes**
 
-- Source IP of network communication to MANAGER is not AGENT's but MANAGER's IP.
-- Source IP of network communication to AGENT is not MANAGER's but AGENT's IP.
+- Source IP of network communication to MANAGER is not AGENT's IP but MANAGER's localhost.
+- Source IP of network communication to AGENT is not MANAGER's IP but AGENT's localhost.
