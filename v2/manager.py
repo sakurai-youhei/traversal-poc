@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+from contextlib import closing
 try:
     from gzip import decompress
 except ImportError:
@@ -32,7 +33,8 @@ def main():
 
     url = ("https://github.com/jpillora/chisel/releases/download/"
            "v1.7.2/chisel_1.7.2_linux_amd64.gz")
-    with urlopen(url) as res, NamedTemporaryFile("wb", delete=False) as fp:
+    with closing(urlopen(url)) as res, \
+            NamedTemporaryFile("wb", delete=False) as fp:
         fp.write(decompress(res.read()))
     check_call(["chmod", "+x", fp.name])
 
