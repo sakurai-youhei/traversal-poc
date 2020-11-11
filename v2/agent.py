@@ -25,18 +25,18 @@ def main():
     index = int(environ["INDEX"])
     manager = environ["MANAGER"]
 
-    for port in (22, 80, 443, 5432):
-        cmd = ("iptables -v -t nat -A OUTPUT -p tcp --destination %(manager)s "
-               "--dport %(port)d -j REDIRECT --to-port 1%(port)04d") % dict(
-                   manager=manager, port=port)
-        check_call(cmd.split())
-
     url = ("https://github.com/jpillora/chisel/releases/download/"
            "v1.7.2/chisel_1.7.2_linux_amd64.gz")
     with closing(urlopen(url)) as res, \
             NamedTemporaryFile("wb", delete=False) as fp:
         fp.write(decompress(res.read()))
     check_call(["chmod", "+x", fp.name])
+
+    for port in (22, 80, 443, 5432):
+        cmd = ("iptables -v -t nat -A OUTPUT -p tcp --destination %(manager)s "
+               "--dport %(port)d -j REDIRECT --to-port 1%(port)04d") % dict(
+                   manager=manager, port=port)
+        check_call(cmd.split())
 
     while True:
         opts = ("client -v --tls-skip-verify https://%(manager)s:8443 "

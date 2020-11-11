@@ -25,18 +25,18 @@ except ImportError:
 def main():
     agents = environ["AGENTS"].split(",")
 
-    for index, agent in enumerate(filter(None, agents), start=1):
-        cmd = ("iptables -v -t nat -A OUTPUT -p tcp --destination %(agent)s "
-               "--dport 22 -j REDIRECT --to-port 1%(port)04d") % dict(
-                   agent=agent, port=22 + index)
-        check_call(cmd.split())
-
     url = ("https://github.com/jpillora/chisel/releases/download/"
            "v1.7.2/chisel_1.7.2_linux_amd64.gz")
     with closing(urlopen(url)) as res, \
             NamedTemporaryFile("wb", delete=False) as fp:
         fp.write(decompress(res.read()))
     check_call(["chmod", "+x", fp.name])
+
+    for index, agent in enumerate(filter(None, agents), start=1):
+        cmd = ("iptables -v -t nat -A OUTPUT -p tcp --destination %(agent)s "
+               "--dport 22 -j REDIRECT --to-port 1%(port)04d") % dict(
+                   agent=agent, port=22 + index)
+        check_call(cmd.split())
 
     with NamedTemporaryFile("w", delete=False) as crt, \
             NamedTemporaryFile("w", delete=False) as key:
