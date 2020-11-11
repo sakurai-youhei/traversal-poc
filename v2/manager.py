@@ -1,19 +1,25 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+
+from __future__ import print_function
 
 from gzip import decompress
 from subprocess import check_call
 from os import environ
 from tempfile import NamedTemporaryFile
 from textwrap import dedent
-from urllib.request import urlopen
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
 
 
 def main():
     agents = environ["AGENTS"].split(",")
 
     for index, agent in enumerate(filter(None, agents), start=1):
-        cmd = (f"iptables -v -t nat -A OUTPUT -p tcp --destination {agent} "
-               f"--dport 22 -j REDIRECT --to-port {(10022 + index)}")
+        cmd = ("iptables -v -t nat -A OUTPUT -p tcp --destination %(agent) "
+               "--dport 22 -j REDIRECT --to-port 1%(port)04d") % dict(
+                   agent=agent, port=22 + index)
         check_call(cmd.split())
 
     url = ("https://github.com/jpillora/chisel/releases/download/"

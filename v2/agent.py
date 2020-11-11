@@ -1,10 +1,15 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+
+from __future__ import print_function
 
 from gzip import decompress
 from subprocess import check_call
 from os import environ
 from tempfile import NamedTemporaryFile
-from urllib.request import urlopen
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
 
 
 def main():
@@ -12,8 +17,9 @@ def main():
     manager = environ["MANAGER"]
 
     for port in (22, 80, 443, 5432):
-        cmd = (f"iptables -v -t nat -A OUTPUT -p tcp --destination {manager} "
-               f"--dport {port} -j REDIRECT --to-port 1{port:0>4}")
+        cmd = ("iptables -v -t nat -A OUTPUT -p tcp --destination %(manager)s "
+               "--dport %(port)d -j REDIRECT --to-port 1%(port)04d") % dict(
+                   manager=manager, port=port)
         check_call(cmd.split())
 
     url = ("https://github.com/jpillora/chisel/releases/download/"
@@ -23,13 +29,12 @@ def main():
     check_call(["chmod", "+x", fp.name])
 
     while True:
-        check_call([fp.name, "client", "-v", "--tls-skip-verify",
-                    f"https://{manager}:8443"
-                    f"0.0.0.0:10022:{manager}:22",
-                    f"0.0.0.0:10080:{manager}:80",
-                    f"0.0.0.0:10443:{manager}:443",
-                    f"0.0.0.0:15432:{manager}:5432",
-                    f"R:0.0.0.0:{(10022 + index)}:127.0.0.1:22"])
+        opts = ("client -v --tls-skip-verify https://%(manager)s:8443 "
+                "0.0.0.0:10022:%(manager)s:22 0.0.0.0:10080:%(manager)s:80 "
+                "0.0.0.0:10443:%(manager)s:443 0.0.0.0:15432:%(manager)s:5432 "
+                "R:0.0.0.0:1%(port)04d:127.0.0.1:22") % dict(
+                    manager=manager, port=22 + index)
+        check_call([fp.name] + opts.split())
 
 
 if __name__ == "__main__":

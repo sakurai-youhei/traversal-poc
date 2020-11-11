@@ -23,7 +23,7 @@ _Note: The `agent-index` starts from 1._
 - sudo
 - iptables
 - curl
-- Python 3.7 or later
+- Python 2.7 or 3
 
 **Diagram**
 
