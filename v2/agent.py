@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+from contextlib import closing
 try:
     from gzip import decompress
 except ImportError:
