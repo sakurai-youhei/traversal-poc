@@ -15,15 +15,32 @@ except ImportError:
 from subprocess import check_call
 from os import environ
 from tempfile import NamedTemporaryFile
+from threading import Timer
 try:
     from urllib.request import urlopen
 except ImportError:
     from urllib2 import urlopen
 
 
+def iptables(manager):
+    for port in (22, 80, 443, 5432):
+        cmd = ("iptables -v -t nat -A OUTPUT -p tcp --destination %(manager)s "
+               "--dport %(port)d -j REDIRECT --to-port 1%(port)04d") % dict(
+                   manager=manager, port=port)
+        check_call(cmd.split())
+
+    timer = Timer(10, iptables, args=(manager, ))
+    timer.setDaemon(True)
+    timer.start()
+
+
 def main():
     index = int(environ["INDEX"])
     manager = environ["MANAGER"]
+
+    timer = Timer(10, iptables, args=(manager, ))
+    timer.setDaemon(True)
+    timer.start()
 
     url = ("https://github.com/jpillora/chisel/releases/download/"
            "v1.7.2/chisel_1.7.2_linux_amd64.gz")
@@ -31,12 +48,6 @@ def main():
             NamedTemporaryFile("wb", delete=False) as fp:
         fp.write(decompress(res.read()))
     check_call(["chmod", "+x", fp.name])
-
-    for port in (22, 80, 443, 5432):
-        cmd = ("iptables -v -t nat -A OUTPUT -p tcp --destination %(manager)s "
-               "--dport %(port)d -j REDIRECT --to-port 1%(port)04d") % dict(
-                   manager=manager, port=port)
-        check_call(cmd.split())
 
     while True:
         opts = ("client -v --tls-skip-verify https://%(manager)s:8443 "

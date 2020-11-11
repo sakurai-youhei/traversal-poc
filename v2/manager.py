@@ -16,10 +16,23 @@ from subprocess import check_call
 from os import environ
 from tempfile import NamedTemporaryFile
 from textwrap import dedent
+from threading import Timer
 try:
     from urllib.request import urlopen
 except ImportError:
     from urllib2 import urlopen
+
+
+def iptables(agents):
+    for index, agent in enumerate(filter(None, agents), start=1):
+        cmd = ("iptables -v -t nat -A OUTPUT -p tcp --destination %(agent)s "
+               "--dport 22 -j REDIRECT --to-port 1%(port)04d") % dict(
+                   agent=agent, port=22 + index)
+        check_call(cmd.split())
+
+    timer = Timer(10, iptables, args=(agents, ))
+    timer.setDaemon(True)
+    timer.start()
 
 
 def main():
@@ -32,11 +45,9 @@ def main():
         fp.write(decompress(res.read()))
     check_call(["chmod", "+x", fp.name])
 
-    for index, agent in enumerate(filter(None, agents), start=1):
-        cmd = ("iptables -v -t nat -A OUTPUT -p tcp --destination %(agent)s "
-               "--dport 22 -j REDIRECT --to-port 1%(port)04d") % dict(
-                   agent=agent, port=22 + index)
-        check_call(cmd.split())
+    timer = Timer(10, iptables, args=(agents, ))
+    timer.setDaemon(True)
+    timer.start()
 
     with NamedTemporaryFile("w", delete=False) as crt, \
             NamedTemporaryFile("w", delete=False) as key:
