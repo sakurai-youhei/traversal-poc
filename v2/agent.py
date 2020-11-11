@@ -2,7 +2,15 @@
 
 from __future__ import print_function
 
-from gzip import decompress
+try:
+    from gzip import decompress
+except ImportError:
+    from io import BytesIO
+    from gzip import GzipFile
+
+    def decompress(data):
+        with GzipFile(fileobj=BytesIO(data)) as f:
+            return f.read()
 from subprocess import check_call
 from os import environ
 from tempfile import NamedTemporaryFile

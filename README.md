@@ -6,14 +6,14 @@
 
 ```
 curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v2/manager.py \
-    | sudo env AGENTS=<agent1-ip>[,<agent2-ip>,<agent3-ip>...] python3
+    | sudo env AGENTS=<agent1-ip>[,<agent2-ip>,<agent3-ip>...] python
 ```
 
 **AGENT**
 
 ```
 curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v2/agent.py \
-    | sudo env INDEX=<agent-index> MANAGER=<manager-ip> python3
+    | sudo env INDEX=<agent-index> MANAGER=<manager-ip> python
 ```
 
 _Note: The `agent-index` starts from 1._
