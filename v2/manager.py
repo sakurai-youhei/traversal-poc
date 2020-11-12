@@ -17,6 +17,7 @@ from os import environ
 from tempfile import NamedTemporaryFile
 from textwrap import dedent
 from threading import Timer
+from time import sleep
 try:
     from urllib.request import urlopen
 except ImportError:
@@ -40,9 +41,17 @@ def main():
 
     url = ("https://github.com/jpillora/chisel/releases/download/"
            "v1.7.2/chisel_1.7.2_linux_amd64.gz")
-    with closing(urlopen(url)) as res, \
-            NamedTemporaryFile("wb", delete=False) as fp:
-        fp.write(decompress(res.read()))
+    for _ in range(10):
+        try:
+            with closing(urlopen(url)) as res, \
+                    NamedTemporaryFile("wb", delete=False) as fp:
+                fp.write(decompress(res.read()))
+        except Exception as e:
+            sleep(5)
+        else:
+            break
+    else:
+        raise e
     check_call(["chmod", "+x", fp.name])
 
     timer = Timer(10, iptables, args=(agents, ))
