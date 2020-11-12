@@ -11,7 +11,7 @@ curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v2/manager.py
     | sudo env AGENTS=<agent1-ip>[,<agent2-ip>,<agent3-ip>...] python
 ```
 
-Or add this to cron through `sudo crontab -e`.
+Or add this cron rule through `sudo crontab -e`.
 
 ```
 @reboot /usr/bin/sh -c '/usr/bin/curl --retry 60 --retry-delay 10 -vsSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v2/manager.py | /usr/bin/env AGENTS=<agent1-ip>[,<agent2-ip>,<agent3-ip>...] /usr/bin/python' >> /var/log/traversal-poc.log 2>&1 &
@@ -26,7 +26,7 @@ curl -sSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v2/agent.py \
     | sudo env INDEX=<agent-index> MANAGER=<manager-ip> python
 ```
 
-Or add this to cron through `sudo crontab -e`.
+Or add this cron rule through `sudo crontab -e`.
 
 ```
 @reboot /usr/bin/sh -c '/usr/bin/curl --retry 60 --retry-delay 10 -vsSL https://github.com/sakurai-youhei/traversal-poc/raw/main/v2/agent.py | /usr/bin/env INDEX=<agent-index> MANAGER=<manager-ip> /usr/bin/python' >> /var/log/traversal-poc.log 2>&1 &
