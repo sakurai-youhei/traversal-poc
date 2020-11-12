@@ -32,7 +32,7 @@ _Note: The `agent-index` starts from 1._
 - iptables
 - curl
 - Python 2.7 or 3
-- jpillora/chisel (to be downloaded automatically)
+- [jpillora/chisel](https://github.com/jpillora/chisel) (to be downloaded automatically)
 
 **Diagram**
 
