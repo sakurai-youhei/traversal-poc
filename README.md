@@ -61,7 +61,7 @@ Or add this cron rule through `sudo crontab -e`.
   +------------------+    +------------+   +--------------------+
 ```
 
-- chisel establishes bi-directional communication tunnel over wss:// (WebSocket over SSL/TLS) through 8443/tcp.
+- chisel establishes a tunnel over wss:// (WebSocket over SSL/TLS) through 8443/tcp, which initiates SSH bi-directional ports forwarding over the tunnel.
 - When AGENT opens channels to 5432/tcp, 443/tcp, 80/tcp and 22/tcp on MAANGER, iptables on AGENT redirects the communication to local 15432/tcp, 10443/tcp, 10080/tcp and 10022/tcp which ports are being teleported to MAANGER's remote 5432/tcp, 443/tcp, 80/tcp and 22/tcp by chisel.
 - When MANAGER  opens channels to 22/tcp on AGENT, iptables on MANAGER redirects the communication to local 1002x/tcp which port is being teleported to AGENT's remote 22/tcp by chisel.
 
