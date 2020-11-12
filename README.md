@@ -28,10 +28,11 @@ _Note: The `agent-index` starts from 1._
 
 **Prerequisites**
 
-- sudo
+- sudo or cron
 - iptables
 - curl
 - Python 2.7 or 3
+- jpillora/chisel (to be downloaded automatically)
 
 **Diagram**
 
