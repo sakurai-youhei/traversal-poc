@@ -2,6 +2,8 @@
 
 ## Version 2
 
+### Installation (Injection)
+
 **MANAGER**
 
 Run this
@@ -40,7 +42,7 @@ Or add this cron rule through `sudo crontab -e`.
 - Python 2.7 or 3
 - [jpillora/chisel](https://github.com/jpillora/chisel) (to be downloaded automatically)
 
-**Diagram**
+### Diagram & Description
 
 ```
    MANAGER                 NA(P)T/PROXY     AGENT
@@ -63,9 +65,6 @@ Or add this cron rule through `sudo crontab -e`.
 
 - chisel establishes a tunnel over wss:// (WebSocket over SSL/TLS) through 8443/tcp, which initiates SSH bi-directional ports forwarding over the tunnel.
 - When AGENT opens channels to 5432/tcp, 443/tcp, 80/tcp and 22/tcp on MAANGER, iptables on AGENT redirects them to local 15432/tcp, 10443/tcp, 10080/tcp and 10022/tcp which ports are being teleported to MAANGER's remote 5432/tcp, 443/tcp, 80/tcp and 22/tcp by chisel.
+    - i.e. Source IP of network communication to MANAGER is not AGENT's IP but MANAGER's 127.0.0.1.
 - When MANAGER  opens channels to 22/tcp on AGENT, iptables on MANAGER redirects them to local 1002x/tcp which port is being teleported to AGENT's remote 22/tcp by chisel.
-
-**Configuration notes**
-
-- Source IP of network communication to MANAGER is not AGENT's IP but MANAGER's 127.0.0.1.
-- Source IP of network communication to AGENT is not MANAGER's IP but AGENT's 127.0.0.1.
+    - i.e. Source IP of network communication to AGENT is not MANAGER's IP but AGENT's 127.0.0.1.
