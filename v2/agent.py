@@ -24,7 +24,7 @@ except ImportError:
 
 def iptables(manager):
     for port in (22, 80, 443, 5432):
-        cmd = ("/sbin/iptables -v -t nat -A OUTPUT -p tcp --destination "
+        cmd = ("/sbin/iptables -v -w 10 -t nat -A OUTPUT -p tcp --destination "
                "%(manager)s --dport %(port)d -j REDIRECT --to-port 1%(port)04d"
                ) % dict(manager=manager, port=port)
         check_call(cmd.split())

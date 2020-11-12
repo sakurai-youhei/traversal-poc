@@ -25,7 +25,7 @@ except ImportError:
 
 def iptables(agents):
     for index, agent in enumerate(filter(None, agents), start=1):
-        cmd = ("/sbin/iptables -v -t nat -A OUTPUT -p tcp --destination "
+        cmd = ("/sbin/iptables -v -w 10 -t nat -A OUTPUT -p tcp --destination "
                "%(agent)s --dport 22 -j REDIRECT --to-port 1%(port)04d"
                ) % dict(agent=agent, port=22 + index)
         check_call(cmd.split())
